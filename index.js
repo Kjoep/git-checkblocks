@@ -2,6 +2,7 @@ var config = {
     webhookSecret: process.env.GIT_WEBHOOK_SECRET || missingSetup(),
     clientId: process.env.GIT_CLIENT_ID || missingSetup(),
     clientSecret: process.env.GIT_CLIENT_SECRET || missingSetup(),
+    accessToken: process.env.GIT_ACCESS_TOKEN,
     port: process.env.PORT || 7777
 }
 
@@ -13,6 +14,9 @@ var github = require('octonode');
 
 var webhookHandler = createHandler({ path: '/webhook', secret: config.webhookSecret })
 var ghClient = undefined;
+
+if (config.accessToken)
+    ghClient = github.client(config.accessToken);
 
 http.createServer(function (req, res) {
     var uri = url.parse(req.url);
@@ -95,7 +99,7 @@ function githubCallback(req, res){
     } else {
         github.auth.login(values.code, function (err, token, headers) {
             ghClient = github.client(token);
-            console.log('Client initialized');
+            console.log('Client initialized: '+token);
             res.writeHead(302, {'Content-Type': 'text/plain', 'Location': '/'})
             res.end('Authenticated');
         });
