@@ -1,7 +1,8 @@
 var config = {
     webhookSecret: process.env.GIT_WEBHOOK_SECRET,
     clientId: process.env.GIT_CLIENT_ID,
-    clientSecret: process.env.GIT_CLIENT_SECRET
+    clientSecret: process.env.GIT_CLIENT_SECRET,
+    port: process.env.PORT || 7777
 }
 
 var http = require('http')
@@ -24,7 +25,7 @@ http.createServer(function (req, res) {
         res.statusCode = 404
         res.end('no such location')
     });
-}).listen(7777)
+}).listen(config.port)
 
 webhookHandler.on('error', function (err) {
   console.error('Error:', err.message)
