@@ -1,7 +1,7 @@
 var config = {
-    webhookSecret: process.env.GIT_WEBHOOK_SECRET,
-    clientId: process.env.GIT_CLIENT_ID,
-    clientSecret: process.env.GIT_CLIENT_SECRET,
+    webhookSecret: process.env.GIT_WEBHOOK_SECRET || missingSetup(),
+    clientId: process.env.GIT_CLIENT_ID || missingSetup(),
+    clientSecret: process.env.GIT_CLIENT_SECRET || missingSetup(),
     port: process.env.PORT || 7777
 }
 
@@ -100,4 +100,13 @@ function githubCallback(req, res){
             res.end('Authenticated');
         });
     }
+}
+
+function missingSetup(){
+    console.log(`Required config params missing.  Please set following environment variables:
+        - GIT_WEBHOOK_SECRET
+        - GIT_CLIENT_ID
+        - GIT_CLIENT_SECRET
+    `);
+    process.exit(-1);
 }
