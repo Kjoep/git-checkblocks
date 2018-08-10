@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "github-webhook-handler": "^0.7.1",
+    "octonode": "^0.9.3"
+  }
+}
